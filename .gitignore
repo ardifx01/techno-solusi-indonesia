@@ -1,0 +1,27 @@
+# --- Dependencies & build artifacts ---
+/vendor/
+/node_modules/
+/public/build
+
+# --- Environment & secrets ---
+.env
+.env.*
+!.env.example
+auth.json
+
+# --- Laravel runtime ---
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
+
+# Ignore everything in storage except folders Laravel needs
+/storage/*
+!/storage/app
+!/storage/framework
+!/storage/framework/cache
+!/storage/framework/cache/data
+!/storage/framework/sessions
+!/storage/framework/testing
+!/storage/framework/views
+!/storage/logs
+!/storage/app/services.json
+/storage/*.key
