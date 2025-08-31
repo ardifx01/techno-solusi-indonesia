@@ -54,10 +54,14 @@ class ServiceController extends Controller
      * Method untuk menampilkan halaman detail.
      * Biarkan ini menggunakan Blade untuk sementara.
      */
-    public function show(Service $service)
+    public function show(Service $service): Response
     {
-        $title = $service->title . ' - Techno Solusi Indonesia';
-        $description = $service->short_description;
-        return view('certifications.show', compact('service', 'title', 'description'));
+        return Inertia::render('Certifications/Show', [
+            'service' => $service,
+            'meta' => [
+                'title' => $service->title . ' - Techno Solusi Indonesia',
+                'description' => $service->short_description,
+            ],
+        ]);
     }
 }
