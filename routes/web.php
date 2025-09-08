@@ -11,6 +11,13 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
+Route::get('/tentang-kami', function () {
+    return Inertia::render('TentangKami');
+})->name('tentang-kami');
+
+Route::get('/kontak', function () {
+    return Inertia::render('Kontak');
+})->name('kontak');
 
 Route::name('certifications.')->group(function () {
     Route::get('/sertifikasi', [ServiceController::class, 'page'])->name('index');

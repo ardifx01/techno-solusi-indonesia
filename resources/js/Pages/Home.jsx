@@ -176,13 +176,15 @@ function AboutSection({ missions }) {
         </div>
 
         <div className="bg-gradient-to-br from-blue-100 to-cyan-100 rounded-3xl p-8 border border-blue-200 animate-fade-in-up delay-200 shadow-xl">
-           <h3 className="text-2xl font-bold text-slate-900 mb-4">Visi & Misi Kami</h3>
-          <p className="text-slate-700 mb-6 leading-relaxed">
-            *Visi:* Menjadi konsultan sertifikasi terdepan yang profesional, terpercaya, dan memberikan nilai tambah nyata bagi klien di seluruh Indonesia.
-          </p>
+           <h3 className="text-3xl font-bold text-slate-900 mb-6">Visi & Misi Kami</h3>
 
-          <h3 className="text-xl font-semibold text-slate-900 mb-3">Misi Kami:</h3>
-          <ul className="space-y-3 text-slate-700">
+           <h4 className="text-xl font-semibold text-slate-800 mb-2">Visi</h4>
+           <p className="text-slate-700 mb-6 leading-relaxed">
+             Menjadi konsultan sertifikasi terdepan di Indonesia yang dikenal karena integritas, keahlian, dan kemampuannya dalam memberikan nilai tambah nyata bagi setiap klien.
+           </p>
+
+           <h4 className="text-xl font-semibold text-slate-800 mb-3">Misi</h4>
+           <ul className="space-y-3 text-slate-700">
             {missions.map((m, i) => (
               <li key={i} className="flex gap-3 items-start">
                 <i className="fas fa-check-circle text-blue-600 mt-1 text-lg shrink-0" />

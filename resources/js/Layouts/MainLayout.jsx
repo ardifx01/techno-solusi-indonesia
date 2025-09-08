@@ -56,7 +56,7 @@ export default function MainLayout({ children }) {
                 >
                 {/* DIUBAH DI SINI: Link "Layanan" dihilangkan */}
                 <li><Link href="/">Beranda</Link></li>
-                <li><Link href="/#about">Tentang Kami</Link></li>
+                <li><Link href="/tentang-kami">Tentang Kami</Link></li>
                 <li><Link href="/sertifikasi">Sertifikasi</Link></li>
                 <li><Link href="/#contact">Kontak</Link></li>
                 </ul>
@@ -80,7 +80,7 @@ export default function MainLayout({ children }) {
             <nav className="flex items-center gap-1">
                 {/* DIUBAH DI SINI: Link "Layanan" dihilangkan */}
                 <Link href="/" className="px-3 py-2 rounded-lg hover:text-blue-700 hover:bg-blue-50">Beranda</Link>
-                <Link href="/#about" className="px-3 py-2 rounded-lg hover:text-blue-700 hover:bg-blue-50">Tentang Kami</Link>
+                <Link href="/tentang-kami" className="px-3 py-2 rounded-lg hover:text-blue-700 hover:bg-blue-50">Tentang Kami</Link>
                 <Link href="/sertifikasi" className="px-3 py-2 rounded-lg hover:text-blue-700 hover:bg-blue-50">Sertifikasi</Link>
                 <Link href="/#contact" className="px-3 py-2 rounded-lg hover:text-blue-700 hover:bg-blue-50">Kontak</Link>
             </nav>
