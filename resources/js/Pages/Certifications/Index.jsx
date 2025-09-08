@@ -30,6 +30,7 @@ const CertificationCard = ({ service, index }) => {
       <div className="relative p-6 h-full flex flex-col">
         {/* === BADGE SIMPLE === */}
         <div className="mb-3 flex flex-wrap items-center gap-2">
+          {/* Badge ini sudah biru, jadi sudah sesuai */}
           <span className="inline-flex items-center rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white text-[11px] font-semibold h-6 px-2.5 shadow-sm">
             {isoLabel}
           </span>
@@ -60,11 +61,12 @@ const CertificationCard = ({ service, index }) => {
           </div>
         )}
 
-        {/* === CTA === */}
+        {/* === CTA (TOMBOL) === */}
         <div className="mt-auto">
           <Link
             href={`/sertifikasi/${service.slug}`}
-            className="group/btn relative w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2.5 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+            // PERUBAHAN DI SINI: Mengganti 'purple' dengan 'cyan' untuk gradasi premium
+            className="group/btn relative w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-medium py-2.5 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
           >
             <span>Lihat Detail</span>
             <svg className={`w-4 h-4 transition-transform duration-300 ${hovered ? 'translate-x-1' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -319,11 +321,9 @@ export default function Index({ initialServices, initialFacets, initialFilters }
                     />
                     </div>
 
-                    {/* Saat kategori dipilih (bukan 'all') -> tampilkan meta yang relevan */}
                     {filters.category !== 'all' ? (
                     <div className="space-y-4 mt-6">
                         {Object.entries(facets?.metadata_facets || {})
-                        // hanya tampilkan meta yang punya opsi (min 1 item)
                         .filter(([, opts]) => Array.isArray(opts) && opts.length > 0)
                         .map(([key, options]) => (
                             <FilterSelect
@@ -337,7 +337,6 @@ export default function Index({ initialServices, initialFacets, initialFilters }
                         ))}
                     </div>
                     ) : (
-                    // Hint kecil saat kategori = all (opsional)
                     <div className="mt-4 text-[13px] text-gray-500">
                         Pilih <span className="font-medium text-gray-700">Kategori</span> untuk menampilkan filter lanjutan (jenis ISO, akreditasi, dsb.).
                     </div>
@@ -363,7 +362,7 @@ export default function Index({ initialServices, initialFacets, initialFilters }
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8 bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
                         <div>
                             <h2 className="text-lg font-semibold text-gray-800">
-                            {total} Sertifikasi ditemukan
+                            {total} Sertifikasi {filters.category} ditemukan
                             </h2>
                             {hasPagination && (
                             <p className="text-sm text-gray-600">
