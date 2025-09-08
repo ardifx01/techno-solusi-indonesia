@@ -30,7 +30,6 @@ const CertificationCard = ({ service, index }) => {
       <div className="relative p-6 h-full flex flex-col">
         {/* === BADGE SIMPLE === */}
         <div className="mb-3 flex flex-wrap items-center gap-2">
-          {/* Badge ini sudah biru, jadi sudah sesuai */}
           <span className="inline-flex items-center rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white text-[11px] font-semibold h-6 px-2.5 shadow-sm">
             {isoLabel}
           </span>
@@ -65,7 +64,6 @@ const CertificationCard = ({ service, index }) => {
         <div className="mt-auto">
           <Link
             href={`/sertifikasi/${service.slug}`}
-            // PERUBAHAN DI SINI: Mengganti 'purple' dengan 'cyan' untuk gradasi premium
             className="group/btn relative w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-medium py-2.5 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
           >
             <span>Lihat Detail</span>
@@ -116,7 +114,6 @@ const Pagination = ({ links = [] }) => (
 
 // Select serbaguna
 const FilterSelect = ({ value, onChange, options, placeholder, label }) => {
-  // sanitize: pastikan value ada di options; kalau tidak, fallback ke 'all'
   const flatValues = (options ?? []).map(opt => (Array.isArray(opt) ? opt[0] : opt))
   const safeValue = flatValues.includes(value) ? value : 'all'
 

@@ -1,4 +1,3 @@
-// resources/js/Layouts/MainLayout.jsx
 import React, { useEffect, useState } from 'react'
 import { Link, Head } from '@inertiajs/react'
 
@@ -13,36 +12,25 @@ export default function MainLayout({ children }) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const navItem = (to, label, isAnchor = false) => {
-    const active = !isAnchor && pathname === to
-    const base =
-      'px-3 py-2 rounded-lg transition-colors hover:text-blue-700 hover:bg-blue-50'
-    const activeCls =
-      'text-blue-700 bg-blue-50 font-semibold shadow-[inset_0_0_0_1px_rgba(59,130,246,.15)]'
-    if (isAnchor) {
-      return (
-        <a href={to} className={`${base}`}>
-          {label}
-        </a>
-      )
-    }
-    return (
-      <Link href={to} className={`${base} ${active ? activeCls : 'text-slate-700'}`}>
-        {label}
-      </Link>
-    )
-  }
+  // Data Kategori Sertifikasi untuk ditampilkan di Footer
+  const CERTIFICATION_CATEGORIES_FOR_FOOTER = [
+    { title: 'Akreditasi', filterValue: 'akreditasi' },
+    { title: 'Pembinaan SMK3 Kemnaker', filterValue: 'pembinaan smk3 kemnaker' },
+    { title: 'Riksa Uji Alat K3 Disnaker', filterValue: 'riksa uji alat k3 disnaker' },
+    { title: 'SBU Badan Usaha', filterValue: 'sbu bu' },
+    { title: 'Audit SMK3 Kemnaker', filterValue: 'sertifikat audit smk3 kemnaker' },
+    { title: 'Sertifikat Kompetensi K3 BNSP', filterValue: 'sertifikat kompetensi k3 bnsp' },
+  ];
 
   return (
     <>
-        {/* Head */}
         <Head title="Techno Solusi Indonesia">
-        <link rel="icon" href="/brand/favicon.ico?v=3" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32x32.png?v=3" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicon-16x16.png?v=3" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/brand/apple-touch-icon.png?v=3" />
-        <link rel="manifest" href="/brand/site.webmanifest?v=3" />
-        <meta name="theme-color" content="#2563eb" />
+          <link rel="icon" href="/brand/favicon.ico?v=3" />
+          <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32x32.png?v=3" />
+          <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicon-16x16.png?v=3" />
+          <link rel="apple-touch-icon" sizes="180x180" href="/brand/apple-touch-icon.png?v=3" />
+          <link rel="manifest" href="/brand/site.webmanifest?v=3" />
+          <meta name="theme-color" content="#2563eb" />
         </Head>
 
       {/* NAVBAR */}
@@ -55,7 +43,6 @@ export default function MainLayout({ children }) {
             : 'border-b border-transparent',
         ].join(' ')}
         >
-        {/* ⬇️ container HARUS flex + w-full */}
         <div className="container mx-auto px-4 flex items-center gap-2">
             {/* kiri */}
             <div className="navbar-start flex-1">
@@ -67,22 +54,19 @@ export default function MainLayout({ children }) {
                 tabIndex={0}
                 className="menu menu-sm dropdown-content mt-3 p-2 shadow-xl bg-white/95 backdrop-blur-lg rounded-2xl w-60 border border-slate-200"
                 >
+                {/* DIUBAH DI SINI: Link "Layanan" dihilangkan */}
                 <li><Link href="/">Beranda</Link></li>
-                <li><a href="#services">Layanan</a></li>
-                <li><a href="#about">Tentang Kami</a></li>
-                <li><Link href="/certifications">Sertifikasi</Link></li>
-                <li><a href="#contact">Kontak</a></li>
+                <li><Link href="/#about">Tentang Kami</Link></li>
+                <li><Link href="/sertifikasi">Sertifikasi</Link></li>
+                <li><Link href="/#contact">Kontak</Link></li>
                 </ul>
             </div>
 
             <Link href="/" className="flex items-center gap-3">
                 <img
-                    src="/brand/techno-solusi-indonesia.png"  // atau /brand/logo-mark.png
+                    src="/brand/techno-solusi-indonesia.png"
                     alt="Techno Solusi Indonesia"
                     className="h-7 w-7 rounded-lg"
-                    loading="eager"
-                    decoding="async"
-                    fetchpriority="high"
                 />
                 <span className="hidden sm:inline text-lg font-semibold text-slate-900">
                     Techno Solusi Indonesia
@@ -94,21 +78,21 @@ export default function MainLayout({ children }) {
             {/* tengah */}
             <div className="navbar-center hidden lg:flex justify-center">
             <nav className="flex items-center gap-1">
+                {/* DIUBAH DI SINI: Link "Layanan" dihilangkan */}
                 <Link href="/" className="px-3 py-2 rounded-lg hover:text-blue-700 hover:bg-blue-50">Beranda</Link>
-                <a href="#services" className="px-3 py-2 rounded-lg hover:text-blue-700 hover:bg-blue-50">Layanan</a>
-                <a href="#about" className="px-3 py-2 rounded-lg hover:text-blue-700 hover:bg-blue-50">Tentang Kami</a>
-                <Link href="/certifications" className="px-3 py-2 rounded-lg hover:text-blue-700 hover:bg-blue-50">Sertifikasi</Link>
-                <a href="#contact" className="px-3 py-2 rounded-lg hover:text-blue-700 hover:bg-blue-50">Kontak</a>
+                <Link href="/#about" className="px-3 py-2 rounded-lg hover:text-blue-700 hover:bg-blue-50">Tentang Kami</Link>
+                <Link href="/sertifikasi" className="px-3 py-2 rounded-lg hover:text-blue-700 hover:bg-blue-50">Sertifikasi</Link>
+                <Link href="/#contact" className="px-3 py-2 rounded-lg hover:text-blue-700 hover:bg-blue-50">Kontak</Link>
             </nav>
             </div>
 
             {/* kanan */}
             <div className="navbar-end flex-1 justify-end">
             <a
-                href="#contact"
-                className="btn btn-sm text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-[0_10px_30px_rgba(30,64,175,.18)] hover:shadow-[0_16px_40px_rgba(30,64,175,.24)]"
+                href="mailto:info@technosolusi.co.id" // Diarahkan ke email
+                className="btn btn-sm rounded-full text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 shadow-md transition-all"
             >
-                <i className="fas fa-phone mr-2" /> Hubungi Kami
+                <i className="fas fa-paper-plane mr-2" /> Hubungi Kami
             </a>
             </div>
         </div>
@@ -118,138 +102,84 @@ export default function MainLayout({ children }) {
       <main className="pt-16">{children}</main>
 
       {/* FOOTER */}
-      <footer className="relative mt-16">
-        {/* background gradient + bubbles */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-white via-blue-50 to-[#dfe9ff]" />
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute -top-8 left-10 w-24 h-24 rounded-full bg-[#DCE8FF] opacity-60" />
-          <div className="absolute top-24 right-28 w-20 h-20 rounded-full bg-[#DCE8FF] opacity-60" />
-          <div className="absolute bottom-10 left-1/4 w-14 h-14 rounded-full bg-[#DCE8FF] opacity-60" />
-        </div>
-
+      <footer className="relative mt-16 bg-gradient-to-br from-blue-800 to-cyan-700 text-white">
         <div className="container mx-auto px-4 py-14">
           <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
             {/* Brand & Social */}
             <div>
               <Link href="/" className="flex items-center gap-3">
                 <img
-                    src="/brand/techno-solusi-indonesia.png"  // atau /brand/logo-mark.png
+                    src="/brand/logo-white.png" // Menggunakan logo putih
                     alt="Techno Solusi Indonesia"
                     className="h-7 w-7 rounded-lg"
-                    loading="eager"
-                    decoding="async"
-                    fetchpriority="high"
                 />
-                <span className="hidden sm:inline text-lg font-semibold text-slate-900">
+                <span className="text-lg font-semibold text-white">
                     Techno Solusi Indonesia
                 </span>
             </Link>
-              <p className="mt-4 text-slate-600">
-                Solusi teknologi & pengelolaan perparkiran modern, aman, transparan, dan efisien.
+              {/* DIUBAH DI SINI: Deskripsi difokuskan ke sertifikasi */}
+              <p className="mt-4 text-blue-100 text-sm leading-relaxed">
+                Mitra terpercaya Anda untuk meraih sertifikasi standar nasional dan internasional.
               </p>
 
               <div className="mt-5 flex items-center gap-3">
-                <a
-                  className="w-10 h-10 rounded-full grid place-items-center bg-white border border-slate-200 hover:bg-blue-50 hover:text-blue-700 transition"
-                  href="#"
-                  aria-label="Facebook"
-                >
-                  <i className="fab fa-facebook" />
-                </a>
-                <a
-                  className="w-10 h-10 rounded-full grid place-items-center bg-white border border-slate-200 hover:bg-blue-50 hover:text-blue-700 transition"
-                  href="#"
-                  aria-label="Twitter"
-                >
-                  <i className="fab fa-twitter" />
-                </a>
-                <a
-                  className="w-10 h-10 rounded-full grid place-items-center bg-white border border-slate-200 hover:bg-blue-50 hover:text-blue-700 transition"
-                  href="#"
-                  aria-label="LinkedIn"
-                >
-                  <i className="fab fa-linkedin" />
-                </a>
-                <a
-                  className="w-10 h-10 rounded-full grid place-items-center bg-white border border-slate-200 hover:bg-blue-50 hover:text-blue-700 transition"
-                  href="#"
-                  aria-label="Instagram"
-                >
-                  <i className="fab fa-instagram" />
-                </a>
+                <a className="w-10 h-10 rounded-full grid place-items-center bg-white/10 hover:bg-white/20 transition" href="#" aria-label="LinkedIn"><i className="fab fa-linkedin" /></a>
+                <a className="w-10 h-10 rounded-full grid place-items-center bg-white/10 hover:bg-white/20 transition" href="#" aria-label="Instagram"><i className="fab fa-instagram" /></a>
+                <a className="w-10 h-10 rounded-full grid place-items-center bg-white/10 hover:bg-white/20 transition" href="#" aria-label="Facebook"><i className="fab fa-facebook" /></a>
               </div>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h4 className="font-semibold text-slate-900 mb-3">Tautan</h4>
-              <ul className="space-y-2 text-slate-700">
-                <li>
-                  <Link href="/" className="hover:text-blue-700 transition">Beranda</Link>
-                </li>
-                <li>
-                  <a href="#services" className="hover:text-blue-700 transition">Layanan</a>
-                </li>
-                <li>
-                  <a href="#about" className="hover:text-blue-700 transition">Tentang Kami</a>
-                </li>
-                <li>
-                  <Link href="/certifications" className="hover:text-blue-700 transition">Sertifikasi</Link>
-                </li>
-                <li>
-                  <a href="#contact" className="hover:text-blue-700 transition">Kontak</a>
-                </li>
+              <h4 className="font-semibold text-white mb-3">Tautan Cepat</h4>
+              <ul className="space-y-2 text-blue-100 text-sm">
+                {/* DIUBAH DI SINI: Link "Layanan" dihilangkan */}
+                <li><Link href="/" className="hover:text-white transition">Beranda</Link></li>
+                <li><Link href="/#about" className="hover:text-white transition">Tentang Kami</Link></li>
+                <li><Link href="/sertifikasi" className="hover:text-white transition">Sertifikasi</Link></li>
+                <li><Link href="/#contact" className="hover:text-white transition">Kontak</Link></li>
               </ul>
             </div>
 
-            {/* Services */}
+            {/* DIUBAH DI SINI: Kolom Layanan menjadi Sertifikasi */}
             <div>
-              <h4 className="font-semibold text-slate-900 mb-3">Layanan</h4>
-              <ul className="space-y-2 text-slate-700">
-                <li>Pengelolaan Parkir On/Off Street</li>
-                <li>Sistem Digital (e-Parking, e-Payment, RFID)</li>
-                <li>Maintenance Perangkat Parkir</li>
-                <li>Pengelolaan SDM Perparkiran</li>
-                <li>Pendampingan Sertifikasi ISO</li>
+              <h4 className="font-semibold text-white mb-3">Kategori Sertifikasi</h4>
+              <ul className="space-y-2 text-blue-100 text-sm">
+                {CERTIFICATION_CATEGORIES_FOR_FOOTER.map((category, index) => (
+                    <li key={index}>
+                        <Link href={`/sertifikasi?category=${encodeURIComponent(category.filterValue)}`} className="hover:text-white transition">
+                            {category.title}
+                        </Link>
+                    </li>
+                ))}
+                 <li><Link href="/sertifikasi" className="hover:text-white transition font-semibold">Lihat Semua...</Link></li>
               </ul>
             </div>
 
             {/* Contact */}
             <div>
-              <h4 className="font-semibold text-slate-900 mb-3">Kontak</h4>
-              <ul className="space-y-3 text-slate-700">
-                <li className="flex gap-3">
-                  <i className="fas fa-envelope text-blue-600 mt-1" />
+              <h4 className="font-semibold text-white mb-3">Kontak</h4>
+              <ul className="space-y-3 text-blue-100 text-sm">
+                <li className="flex items-start gap-3">
+                  <i className="fas fa-envelope text-cyan-300 mt-1" />
                   info@technosolusi.co.id
                 </li>
-                <li className="flex gap-3">
-                  <i className="fas fa-phone text-blue-600 mt-1" />
+                <li className="flex items-start gap-3">
+                  <i className="fas fa-phone text-cyan-300 mt-1" />
                   021 5900629
                 </li>
-                <li className="flex gap-3">
-                  <i className="fas fa-map-marker-alt text-blue-600 mt-1" />
+                <li className="flex items-start gap-3">
+                  <i className="fas fa-map-marker-alt text-cyan-300 mt-1" />
                   Kawasan Pergudangan 88 No.D1, Pasarkemis, Tangerang
                 </li>
               </ul>
-              <a
-                href="mailto:info@technosolusi.co.id"
-                className="mt-4 inline-flex items-center gap-2 btn btn-sm text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-              >
-                <i className="fas fa-paper-plane" /> Kirim Email
-              </a>
             </div>
           </div>
 
-          {/* Divider */}
-          <div className="mt-12 border-t border-slate-200/70 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
-            <p className="text-sm text-slate-600">
+          <div className="mt-12 border-t border-white/20 pt-6 text-center">
+            <p className="text-sm text-blue-200">
               © {new Date().getFullYear()} Techno Solusi Indonesia. All rights reserved.
             </p>
-            <div className="text-sm text-slate-600 flex items-center gap-4">
-              <a href="#" className="hover:text-blue-700">Privacy</a>
-              <span className="opacity-40">•</span>
-              <a href="#" className="hover:text-blue-700">Terms</a>
-            </div>
           </div>
         </div>
       </footer>
