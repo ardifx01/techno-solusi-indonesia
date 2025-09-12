@@ -36,7 +36,9 @@ class ImportServicesFromJson extends Command
         }
 
         if ($this->option('fresh')) {
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             Service::truncate();
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
             $this->info('Truncated table services.');
         }
 
@@ -86,10 +88,8 @@ class ImportServicesFromJson extends Command
         if ($ext === '') {
             $ext = 'hash:' . md5(json_encode($row));
         }
-
         $svc = Service::firstOrNew(['external_id' => $ext]);
-
-        $svc->title = $title;
+        $svc->title = $this->titleCaseKbbi($title);
         $svc->category = filled($row['category'] ?? null) ? (string)$row['category'] : null;
         $svc->description = $row['description'] ?? null;
         $svc->short_description = $row['short_description'] ?? null;
@@ -103,9 +103,8 @@ class ImportServicesFromJson extends Command
         $svc->requirements = is_array($row['requirements'] ?? null) ? $row['requirements'] : [];
 
         if ($svc->exists && filled($svc->slug)) {
-            // pertahankan slug lama
         } else {
-            $slug = Str::limit(Str::slug($title), 191, '');
+            $slug = Str::limit(Str::slug($title), 191, ''); // slug tetap dari title asli
             if (isset($this->slugPool[$slug])) {
                 $slug = Str::limit($slug . '-' . Str::random(4), 191, '');
             }
@@ -128,5 +127,38 @@ class ImportServicesFromJson extends Command
                 $svc->save();
             }
         });
+    }
+
+    /**
+     * Mengubah string menjadi Title Case sesuai kaidah KBBI.
+     * Kata-kata tugas (konjungsi, preposisi) tetap huruf kecil.
+     *
+     * @param string $string
+     * @return string
+     */
+    protected function titleCaseKbbi(string $string): string
+    {
+        $lowercaseWords = [
+            'dan', 'atau', 'tetapi', 'saat', 'ketika', 'jika', 'maka',
+            'dengan', 'untuk', 'pada', 'kepada', 'dari', 'dalam', 'di', 'ke',
+            'sebagai', 'tentang', 'yang', '&'
+        ];
+
+        $words = explode(' ', strtolower(trim($string)));
+
+        $titleCasedWords = array_map(function ($word, $index) use ($lowercaseWords) {
+            // Selalu kapitalisasi kata pertama
+            if ($index === 0) {
+                return ucfirst($word);
+            }
+            // Biarkan kata tugas tetap huruf kecil
+            if (in_array($word, $lowercaseWords, true)) {
+                return $word;
+            }
+            // Kapitalisasi kata lainnya
+            return ucfirst($word);
+        }, $words, array_keys($words));
+
+        return implode(' ', $titleCasedWords);
     }
 }
