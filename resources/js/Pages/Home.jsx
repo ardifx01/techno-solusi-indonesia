@@ -20,6 +20,8 @@ const CERTIFICATION_CATEGORIES = [
     { icon: 'fa-file-signature', title: 'SIO Kemnaker', desc: 'Surat Izin Operator alat berat & angkut sesuai standar Kemnaker.', filterValue: 'sio kemnaker', btn: 'btn-category-blue', },
     { icon: 'fa-graduation-cap', title: 'SKK BNSP', desc: 'Sertifikat Kompetensi Kerja yang diterbitkan oleh BNSP.', filterValue: 'skk bnsp', btn: 'btn-category-cyan', },
     { icon: 'fa-lightbulb', title: 'SLO DJK ESDM', desc: 'Sertifikat Laik Operasi instalasi tenaga listrik (Ditjen Ketenagalistrikan).', filterValue: 'slo djk esdm', btn: 'btn-category-blue', },
+    { icon: 'fa-building', title: 'Persetujuan Bangunan Gedung (PBG)', desc: 'Izin resmi pembangunan/renovasi bangunan gedung.', filterValue: 'pbg', btn: 'btn-category-cyan', directSlug: 'persetujuan-bangunan-gedung-pbg', },
+    { icon: 'fa-file-contract', title: 'Sertifikat Laik Fungsi (SLF)', desc: 'Sertifikat kelayakan fungsi bangunan gedung.', filterValue: 'slf', btn: 'btn-category-blue', directSlug: 'sertifikat-laik-fungsi-slf', },
 ];
 
 const MISSIONS = [
@@ -101,15 +103,18 @@ function HeroSection() {
 
 function SectionTitle({ title, subtitle }) {
     return (
-        <div className="text-center mb-16"> {/* Margin bawah lebih besar */}
+        <div className="text-center mb-16">
         <h2 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-700 to-cyan-600 bg-clip-text text-transparent leading-snug py-2">{title}</h2>
         {subtitle && <p className="mt-4 text-gray-600 max-w-2xl mx-auto text-lg">{subtitle}</p>} {/* Subtitle lebih besar */}
         </div>
     );
 }
 
-function CategoryCard({ icon, title, desc, btn, filterValue }) {
-    const linkUrl = `/sertifikasi?category=${encodeURIComponent(filterValue)}`;
+function CategoryCard({ icon, title, desc, btn, filterValue, directSlug }) {
+    const linkUrl = directSlug
+        ? `/sertifikasi/${directSlug}`
+        : `/sertifikasi?category=${encodeURIComponent(filterValue)}`;
+
     let iconBgClass = 'bg-blue-600';
     let btnClass = 'bg-blue-600 hover:bg-blue-700';
 

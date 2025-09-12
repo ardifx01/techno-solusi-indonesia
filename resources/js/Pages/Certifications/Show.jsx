@@ -57,19 +57,19 @@ function normWa(num) {
 }
 
 function chooseWa(service) {
-  const meta = service?.metadata || {}
-  const akr  = String(meta['nama-akreditasi'] || '').toUpperCase()
-  const prefer = []
-  if (/KAN|IAF/.test(akr) && import.meta?.env?.VITE_WA_KAN)      prefer.push(import.meta.env.VITE_WA_KAN)
-  if (/NON\s*IAF|IDCAB/.test(akr) && import.meta?.env?.VITE_WA_NON_IAF) prefer.push(import.meta.env.VITE_WA_NON_IAF)
-  const candidates = [
-    ...prefer,
-    meta.whatsapp, meta['wa'], meta['no-wa'],
-    service?.contact?.whatsapp, service?.whatsapp, service?.phone,
-    DEFAULT_WA,
-  ]
-  const picked = candidates.find(Boolean)
-  return normWa(picked)
+    const meta = service?.metadata || {}
+    const akr  = String(meta['nama-akreditasi'] || '').toUpperCase()
+    const prefer = []
+    if (/KAN|IAF/.test(akr) && import.meta?.env?.VITE_WA_KAN)      prefer.push(import.meta.env.VITE_WA_KAN)
+    if (/NON\s*IAF|IDCAB/.test(akr) && import.meta?.env?.VITE_WA_NON_IAF) prefer.push(import.meta.env.VITE_WA_NON_IAF)
+    const candidates = [
+        ...prefer,
+        meta.whatsapp, meta['wa'], meta['no-wa'],
+        service?.contact?.whatsapp, service?.whatsapp, service?.phone,
+        DEFAULT_WA,
+    ]
+    const picked = candidates.find(Boolean)
+    return normWa(picked)
 }
 
 /**
@@ -98,10 +98,10 @@ function buildWaUrl(service) {
   const messageParts = [
     `Selamat ${greeting}.`,
     '',
-    // 1. Pernyataan tujuan yang jelas dari perspektif perusahaan
+
     'Kami tertarik untuk menjajaki kerjasama sertifikasi bagi perusahaan kami dan ingin mendapatkan informasi lebih lanjut mengenai layanan berikut:',
     '',
-    // 2. Detail layanan yang terstruktur tetap dipertahankan
+
     `*Layanan Sertifikasi:* ${service?.title ?? 'Tidak disebutkan'}`,
   ];
 
@@ -111,11 +111,14 @@ function buildWaUrl(service) {
   if (service?.metadata?.['nama-akreditasi']) {
     messageParts.push(`*Akreditasi:* ${service.metadata['nama-akreditasi']}`);
   }
+  if (service?.jangka_waktu) {
+    messageParts.push(`*Jangka Waktu:* ${service.jangka_waktu}`);
+ }
   if (typeof window !== 'undefined') {
     messageParts.push(`*Sumber Informasi:* ${window.location.href}`);
   }
 
-  // 3. Permintaan informasi spesifik dan berorientasi bisnis (Call to Action)
+
   messageParts.push(
     '',
     'Sehubungan dengan itu, mohon kirimkan proposal atau informasi detail mengenai:',
@@ -125,7 +128,6 @@ function buildWaUrl(service) {
     ''
   );
 
-  // 4. Penutup yang sangat formal
   messageParts.push(
     'Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.'
   );
@@ -179,7 +181,6 @@ function buildWaUrl(service) {
               )}
             </div>
 
-            {/* DIUBAH DI SINI: Gradasi judul premium biru-cyan */}
             <h1 className="text-4xl md:text-5xl font-bold leading-tight bg-gradient-to-r from-blue-700 to-cyan-600 bg-clip-text text-transparent">
               {service.title}
             </h1>
@@ -191,7 +192,6 @@ function buildWaUrl(service) {
             )}
 
             <div className="mt-6 flex flex-wrap gap-3">
-              {/* DIUBAH DI SINI: Tombol "Lihat Rincian" dengan gradasi premium biru-cyan */}
               <a href="#detail" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 px-5 py-3 text-white font-medium shadow hover:from-blue-700 hover:to-cyan-600 transition-all">
                 Lihat Rincian
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -226,7 +226,6 @@ function buildWaUrl(service) {
                   <button
                     key={t.key}
                     onClick={() => setTab(t.key)}
-                    // DIUBAH DI SINI: Tombol Tab Aktif dengan gradasi premium biru-cyan
                     className={`whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium border transition
                       ${tab === t.key
                         ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white border-transparent shadow-md'
@@ -292,6 +291,7 @@ function buildWaUrl(service) {
               <li className="flex items-center gap-2"><Dot/> Standar Internasional (ISO)</li>
               {akreditasi && <li className="flex items-center gap-2"><Dot/> {akreditasi}</li>}
               {kategori   && <li className="flex items-center gap-2"><Dot/> Kategori: {kategori}</li>}
+              {service.jangka_waktu && <li className="flex items-center gap-2"><Dot/> Jangka Waktu: {service.jangka_waktu}</li>}
             </ul>
 
             <a

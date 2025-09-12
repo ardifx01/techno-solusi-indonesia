@@ -9,8 +9,8 @@ use Illuminate\Support\Str;
 class Service extends Model
 {
     protected $fillable = [
-        'external_id','title','slug','category','description','short_description',
-        'image_url','cta_text','cta_url','featured','metadata','benefits','requirements',
+        'external_id', 'title', 'slug', 'category', 'description', 'short_description',
+        'jangka_waktu', 'duration_information', 'cta_text', 'cta_url', 'featured', 'metadata', 'benefits', 'requirements',
     ];
 
     protected $casts = [
@@ -32,9 +32,11 @@ class Service extends Model
     public function scopeSearch(Builder $q, ?string $term): Builder
     {
         $term = trim((string)$term);
-        if ($term === '') return $q;
-        $like = '%'.$term.'%';
-        return $q->where(fn($w) => $w->where('title', 'like', $like)->orWhere('short_description', 'like', $like));
+        if ($term === '') {
+            return $q;
+        }
+        $like = '%' . $term . '%';
+        return $q->where(fn ($w) => $w->where('title', 'like', $like)->orWhere('short_description', 'like', $like));
     }
 
     public function scopeCategory(Builder $q, ?string $category): Builder
@@ -46,24 +48,21 @@ class Service extends Model
     public function scopeMetaFilters(Builder $q, array $meta): Builder
     {
         foreach ($meta as $k => $v) {
-            if (empty($v) || strtolower($v) === 'all') continue;
+            if (empty($v) || strtolower($v) === 'all') {
+                continue;
+            }
             $q->whereJsonContains("metadata->{$k}", $v);
         }
         return $q;
     }
 
-    /**
-     * Versi getFacets yang aman dan teroptimasi.
-     */
     public static function getFacets(string $q = '', string $category = 'all', array $meta = []): array
     {
-        // Buat query dasar yang sama dengan query filter utama
         $baseQuery = self::query()
             ->search($q)
             ->category($category)
             ->metaFilters($meta);
 
-        // Ambil daftar kategori yang relevan
         $categories = (clone $baseQuery)
             ->select('category')
             ->whereNotNull('category')
@@ -74,39 +73,31 @@ class Service extends Model
             ->values()
             ->all();
 
-        // Ambil metadata facets dari hasil yang sudah terfilter
         $metadataResults = (clone $baseQuery)
             ->select('metadata')
-            ->limit(1000) // Batasi analisis pada 1000 hasil pertama untuk performa
-            ->get()
-            ->pluck('metadata');
+            ->limit(1000)
+            ->get();
 
-        $metadataFacets = [];
-        foreach ($metadataResults as $metaItem) {
-            if (is_array($metaItem)) {
-                foreach ($metaItem as $key => $value) {
-                    if (is_string($value) && $value !== '') {
-                        if (!isset($metadataFacets[$key])) $metadataFacets[$key] = [];
-                        if (!isset($metadataFacets[$key][$value])) $metadataFacets[$key][$value] = 0;
-                        $metadataFacets[$key][$value]++;
+        $metaFacets = [];
+        $metadataResults->pluck('metadata')->filter()->each(function ($meta) use (&$metaFacets) {
+            if (is_array($meta)) {
+                foreach ($meta as $key => $value) {
+                    if (is_string($value) && !empty($value)) {
+                        if (!isset($metaFacets[$key])) {
+                            $metaFacets[$key] = [];
+                        }
+                        if (!in_array($value, $metaFacets[$key])) {
+                            $metaFacets[$key][] = $value;
+                        }
                     }
                 }
             }
+        });
+
+        foreach ($metaFacets as $key => $values) {
+            sort($metaFacets[$key]);
         }
 
-        // Format ulang metadata facets
-        $formattedMetaFacets = [];
-        foreach ($metadataFacets as $key => $values) {
-            $formattedMetaFacets[$key] = [];
-            foreach ($values as $value => $count) {
-                $formattedMetaFacets[$key][] = [$value, $count];
-            }
-            usort($formattedMetaFacets[$key], fn($a, $b) => $b[1] <=> $a[1]);
-        }
-
-        return [
-            'categories' => $categories,
-            'metadata_facets' => $formattedMetaFacets,
-        ];
+        return compact('categories', 'metaFacets');
     }
 }
